@@ -7,19 +7,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 class MessageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title', 'text', [
+        $builder->add('title', TextType::class, [
             'label'=>'title',
             'constraints'=>[
                 new NotBlank(),
                 new Length(['max'=>'255']),
             ]
         ]);
-        $builder->add('content', 'text', [
+        $builder->add('content', TextType::class, [
             'label'=>'title',
             'constraints'=>[
                 new NotBlank(),

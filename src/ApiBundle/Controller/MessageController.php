@@ -86,7 +86,7 @@ class MessageController extends FOSRestController
     public function postMessageAction(Request $request)
     {
         $message = new Message();
-        $form = $this->createForm(new MessageType(), $message);
+        $form = $this->createForm(MessageType::class, $message);
         
         $form->handleRequest($request);
         
@@ -121,7 +121,7 @@ class MessageController extends FOSRestController
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
         }
         
-        $form = $this->createForm(new MessageType(), $message, ['method' => 'PUT']);
+        $form = $this->createForm(MessageType::class, $message, ['method' => 'PUT']);
         $form->handleRequest($request);
         
         if ($form->isValid())
