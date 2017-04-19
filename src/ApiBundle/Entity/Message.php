@@ -24,6 +24,7 @@ class Message
      * @ORM\GeneratedValue(strategy="AUTO")
      * 
      * @JMS\Expose
+     * @JMS\Groups({"default"})
      */
     private $id;
 
@@ -33,6 +34,7 @@ class Message
      * @ORM\Column(name="title", type="string", length=255)
      * 
      * @JMS\Expose
+     * @JMS\Groups({"default"})
      */
     private $title;
 
@@ -42,21 +44,24 @@ class Message
      * @ORM\Column(name="content", type="text")
      * 
      * @JMS\Expose
-     * 
+     * @JMS\Groups({"default"})
      */
     private $content;
 
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Message", inversedBy="childMessages");
+     * @ORM\ManyToOne(targetEntity="Message", inversedBy="childMessages")
      */
     private $parentMessage;
     
     /**
      * @var string
      *
-     * @ORM\OneToMany(targetEntity="Message", mappedBy="parentMessage");
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="parentMessage")
+     * @JMS\Expose
+     * @JMS\Groups({"thread"})
+     * @JMS\SerializedName("children")
      */
     private $childMessages;
     
@@ -68,7 +73,8 @@ class Message
     {
         return $this->getParentMessage()?$this->getParentMessage()->getId():null;
     }
-
+    
+    
     /**
      * Get id
      *
