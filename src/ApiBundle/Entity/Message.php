@@ -3,12 +3,16 @@
 namespace ApiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Issue
  *
  * @ORM\Table(name="message")
  * @ORM\Entity(repositoryClass="ApiBundle\Repository\IssueRepository")
+ * 
+ * @ExclusionPolicy("all")
  */
 class Message
 {
@@ -18,6 +22,8 @@ class Message
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * 
+     * @Expose
      */
     private $id;
 
@@ -25,6 +31,8 @@ class Message
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * 
+     * @Expose
      */
     private $title;
 
@@ -32,6 +40,9 @@ class Message
      * @var string
      *
      * @ORM\Column(name="content", type="text")
+     * 
+     * @Expose
+     * 
      */
     private $content;
 
