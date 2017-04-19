@@ -72,7 +72,7 @@ class MessageController extends FOSRestController
             $em->persist($message);
             $em->flush();
 
-            return ['message' =>  $message];
+            return View::create(['message' =>  $message], 201);
         }
         
         return View::create($form, 400);
@@ -146,6 +146,28 @@ class MessageController extends FOSRestController
         }
         
         return View::create($form, 400);
+    }
+    
+    /**
+     * 
+     * Deletes a message
+     * 
+     * @return array
+     * 
+     * @Rest\View()
+     * @Rest\Delete("/messages/{id}")
+     * 
+     */
+    public function deleteMessageAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $message = $em->getRepository('ApiBundle:Message')->find($id);
+        if (!$message){
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        }
+        $em->remove($message);
+        $em->flush();
+        return View::create(null, 204);
     }
     
 }
