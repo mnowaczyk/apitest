@@ -3,8 +3,7 @@
 namespace ApiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Issue
@@ -12,7 +11,8 @@ use JMS\Serializer\Annotation\Expose;
  * @ORM\Table(name="message")
  * @ORM\Entity(repositoryClass="ApiBundle\Repository\IssueRepository")
  * 
- * @ExclusionPolicy("all")
+ * @JMS\ExclusionPolicy("all")
+ * @JMS\AccessorOrder("custom", custom = {"id", "title", "content"})
  */
 class Message
 {
@@ -23,7 +23,7 @@ class Message
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * 
-     * @Expose
+     * @JMS\Expose
      */
     private $id;
 
@@ -32,7 +32,7 @@ class Message
      *
      * @ORM\Column(name="title", type="string", length=255)
      * 
-     * @Expose
+     * @JMS\Expose
      */
     private $title;
 
@@ -41,7 +41,7 @@ class Message
      *
      * @ORM\Column(name="content", type="text")
      * 
-     * @Expose
+     * @JMS\Expose
      * 
      */
     private $content;
@@ -59,6 +59,15 @@ class Message
      * @ORM\OneToMany(targetEntity="Message", mappedBy="parentMessage");
      */
     private $childMessages;
+    
+    /**
+     * @JMS\VirtualProperty()
+     * @JMS\SerializedName("parent")
+     */
+    public function getParentId()
+    {
+        return $this->getParentMessage()?$this->getParentMessage()->getId():null;
+    }
 
     /**
      * Get id

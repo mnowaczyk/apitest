@@ -13,6 +13,8 @@ class MessageController extends FOSRestController
 {
     /**
      * 
+     * Lists all messages
+     * 
      * @return array
      * 
      * @Rest\View()
@@ -27,6 +29,8 @@ class MessageController extends FOSRestController
         return ['messages' => $messages];
     }
     /**
+     * 
+     * Shows one message
      * 
      * @return array
      * 
@@ -46,6 +50,8 @@ class MessageController extends FOSRestController
     }
     
     /**
+     * 
+     * Creates new message
      * 
      * @return array
      * 
@@ -74,6 +80,8 @@ class MessageController extends FOSRestController
     }
     
     /**
+     * 
+     * Updates existing message
      * 
      * @return array
      * 
@@ -104,5 +112,40 @@ class MessageController extends FOSRestController
         
     }
     
+    
+    /**
+     * 
+     * Adds a child message to existing one
+     * 
+     * @return array
+     * 
+     * @Rest\View()
+     * @Rest\Post("/messages/{id}/add_child")
+     * 
+     */
+    public function addChildMessageAction(Request $request, $id)
+    {
+        $message = new Message();
+        $em = $this->getDoctrine()->getManager();
+        $parent = $em->getRepository('ApiBundle:Message')->find($id);
+        if (!$parent){
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        }
+        $message->setParentMessage($parent);
+        $form = $this->createForm(new MessageType(), $message);
+        
+        $form->handleRequest($request);
+        
+        if ($form->isValid())
+        {
+            
+            $em->persist($message);
+            $em->flush();
+
+            return ['message' =>  $message];
+        }
+        
+        return View::create($form, 400);
+    }
     
 }

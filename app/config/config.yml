@@ -73,6 +73,8 @@ fos_rest:
         view_response_listener: 'force'
         formats:
             json: true
+    serializer:
+        serialize_null: true
     format_listener:
         rules:
             - { path: ^/, priorities: [ json ], fallback_format: json, prefer_extension: true }
