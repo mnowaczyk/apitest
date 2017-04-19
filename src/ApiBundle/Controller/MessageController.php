@@ -49,6 +49,30 @@ class MessageController extends FOSRestController
         return ['message' => $message];
     }
     
+    
+     
+    /**
+     * 
+     * Shows thread starting with specified message
+     * 
+     * @return array
+     * 
+     * @Rest\View(serializerGroups={"default", "thread"})
+     * @Rest\Get("/thread/{id}")
+     * 
+     */
+    public function threadAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $message = $em->getRepository('ApiBundle:Message')->find($id);
+        if (!$message){
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        }
+        
+        return ['message'=>$message];
+    }
+    
+    
     /**
      * 
      * Creates new message
