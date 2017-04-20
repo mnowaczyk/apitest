@@ -38,6 +38,6 @@ class MessageType extends AbstractType
     
     public function getBlockPrefix()
     {
-        return 'message';
+        return null;
     }
 }
